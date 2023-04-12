@@ -1,0 +1,195 @@
+//JUST COPY AND PASTE THIS CODE IN YOUR CODE EDITOR AND RUN IT
+// THE RESULTS WILL COME IN DRY RUN STATE YOU WILL GET EVERY RECUSRIVE CALL ,VALUE ,AND INFO WHICH 
+// IS BIENG EXECUTED JUST CAREFULLY READ ALL THE OUTPUTS AND AFTER THIS READ THE NORMAL WORKING CODE
+
+
+
+
+
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+bool issafe(vector<vector<int>> &maze,vector<vector<bool>> &visited,int i,int j,int &row,int &col){
+    cout<<endl<<"value of i and j in issafe fundtion"<<endl;
+    cout<<"i "<<i<<endl<<"j "<<j<<endl;
+    cout<<"currently in issafe function"<<endl;
+    if(((i>=0 && i<row) && (j>=0 && j<col)) && (visited[i][j]==false) && (maze[i][j]==1) ){
+        cout<<"returned true"<<endl;
+        return true;
+    }
+    
+     else {
+        cout<<"returned false"<<endl;
+        return false;
+    }
+  
+}
+void solve(vector<vector<int>> &maze,vector<vector<bool>> &visited,int i,int j,int &row,int &col,string output){
+   cout<<endl<<"currently in solve function"<<endl;
+   cout<<"value of string is "<<output<<endl;
+   cout<<"i and j value in solve function"<<endl;
+   cout<<"i: "<<i<<endl<<"j: "<<j<<endl;
+
+    if(maze[0][0]==false){
+        cout<<"no path exists"<<endl;
+        return;
+    }
+    else if(i==row-1 && j==col-1){
+        cout<<"answer found"<<endl;
+        cout<<"printing the output string when the mouse reaches the destination"<<endl;
+        cout<<output<<endl;
+        return;
+    }
+    
+    else if(issafe(maze,visited,i+1,j,row,col)){
+        cout<<endl;
+        cout<<"printing the i and j value in down command"<<endl;
+        cout<<"i "<<i<<endl<<"j "<<j<<endl;
+         cout<<"visited vector before marking true"<<endl;
+         for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<visited[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+        visited[i+1][j]=true;
+        //down
+        cout<<"visited vector after marking true"<<endl;
+         for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<visited[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+        solve(maze,visited,i+1,j,row,col,output+'D');
+        //backtracking
+        cout<<"backtracking after every function stack completes"<<endl;
+
+        visited[i+1][j]=false;
+         cout<<"visited vector after backtracking"<<endl;
+         for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<visited[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+    }
+    
+     
+    if(issafe(maze,visited,i,j-1,row,col)){
+          cout<<"printing the i and j value in left command"<<endl;
+        cout<<"i "<<i<<endl<<"j "<<j<<endl;
+        cout<<"visited vector before marking true"<<endl;
+         for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<visited[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+        visited[i][j-1]=true;
+        //left
+         cout<<"visited vector after marking true"<<endl;
+         for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<visited[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+        solve(maze,visited,i,j-1,row,col,output+'L');
+        //backtracking
+        visited[i][j-1]=false;
+    }
+    
+     
+    if(issafe(maze,visited,i,j+1,row,col)){
+         cout<<"printing the i and j value in right command"<<endl;
+        cout<<"i "<<i<<endl<<"j "<<j<<endl;
+        cout<<"visited vector before marking true"<<endl;
+         for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<visited[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+        visited[i][j+1]=true;
+        //right
+        cout<<"visited vector after marking true"<<endl;
+         for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<visited[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+        solve(maze,visited,i,j+1,row,col,output+'R');
+        //backtracking
+        visited[i][j+1]=false;
+    }
+    
+     
+    if(issafe(maze,visited,i-1,j,row,col)){
+         cout<<"printing the i and j value in up command"<<endl;
+        cout<<"i "<<i<<endl<<"j "<<j<<endl;
+       cout<<"visited vector before marking true"<<endl;
+         for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<visited[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+        visited[i-1][j]=true;
+        //up
+         cout<<"visited vector after marking true"<<endl;
+         for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<visited[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+        
+        solve(maze,visited,i-1,j,row,col,output+'U');
+        //backtracking
+        visited[i-1][j]=false;
+    }
+    
+    
+}
+void rat_in_a_maze (vector<vector<int>> &maze){
+    cout<<endl<<"currently in rat in a maze function"<<endl;
+
+    int col=3;
+    int row=3;
+    vector<vector<bool>> visited(row,vector<bool>(col,false));
+    cout<<"created a visited vector"<<endl;
+    cout<<" printing the visited vector"<<endl;
+   for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<visited[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+    int i=0;
+    int j=0;
+     string output="";
+     cout<<"created an empty string"<<endl;
+     cout<<"entering the solve function"<<endl;
+    solve(maze,visited,i,j,row,col,output);
+}
+int main(){
+    vector<vector<int>>maze{
+    {1,0,0},{1,1,0},{1,1,1}
+    };
+    cout<<" printing the maze"<<endl;
+    for(int k=0;k<3;k++){
+    for(int l=0;l<3;l++){
+   cout<<maze[k][l]<<" ";
+    }
+    cout<<endl;
+   }
+    cout<<"currently in int main funtion"<<endl;
+    cout<<"calling rat in a maze function"<<endl;
+    rat_in_a_maze(maze);
+
+    return 0;
+}
