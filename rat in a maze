@@ -1,0 +1,95 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+bool issafe(vector<vector<int>> &maze,vector<vector<bool>> &visited,int i,int j,int &row,int &col){
+   //checking that i and j are inside the maze the element is not visited and the path should be open that is 1
+    if(((i>=0 && i<row) && (j>=0 && j<col)) && (visited[i][j]==false) && (maze[i][j]==1) ){
+      
+        return true;
+    }
+    else{
+        
+        return false;
+    }
+}
+void solve(vector<vector<int>> &maze,vector<vector<bool>> &visited,int i,int j,int &row,int &col,string output){
+  
+
+    if(maze[0][0]==false){
+       //if the starting element is 0 that is way is blocked then the rat cannot move hence no path exists
+        return;
+    }
+    else if(i==row-1 && j==col-1){
+        //if the mouse has reached the last element in the matrix then print the output string
+        cout<<"answer found"<<endl;
+        cout<<"printing the output string when the mouse reaches the destination"<<endl;
+        cout<<output<<endl;
+        return;
+    }
+    
+    else if(//checking wether the next movement is safe or not
+        issafe(maze,visited,i+1,j,row,col)){
+       // if yes then mark the next position visited
+        visited[i+1][j]=true;
+        //down-> i+1,j
+       //rerursive call
+        solve(maze,visited,i+1,j,row,col,output+'D');
+        //backtracking
+        visited[i+1][j]=false;
+    }
+    
+     
+    if(issafe(maze,visited,i,j-1,row,col)){
+         visited[i][j-1]=true;
+        //left-> i,j-1
+       // recursive call
+        solve(maze,visited,i,j-1,row,col,output+'L');
+        //backtracking
+        visited[i][j-1]=false;
+    }
+    
+     
+    if(issafe(maze,visited,i,j+1,row,col)){
+          visited[i][j+1]=true;
+        //right-> i,j+1
+        //recursive call
+        solve(maze,visited,i,j+1,row,col,output+'R');
+        //backtracking
+        visited[i][j+1]=false;
+    }
+    
+     
+    if(issafe(maze,visited,i-1,j,row,col)){
+          visited[i-1][j]=true;
+        //up-> i-1,j
+        //recursive call
+        solve(maze,visited,i-1,j,row,col,output+'U');
+        //backtracking
+        visited[i-1][j]=false;
+    }
+    
+    
+}
+void rat_in_a_maze (vector<vector<int>> &maze){
+     int col=3;
+    int row=3;
+    //created a visited vector so that we can mark the place where the rat has visited already
+    vector<vector<bool>> visited(row,vector<bool>(col,false));
+   
+    int i=0;
+    int j=0;
+    //created a output string to store the path in terms of R,L,U,D as right left up and down
+     string output="";
+     solve(maze,visited,i,j,row,col,output);
+}
+int main(){
+    //created a maze vector where 1 means path is open
+    //and 0 means path is blocked
+    vector<vector<int>>maze{
+    {1,0,0},{1,1,0},{1,1,1}
+    };
+     rat_in_a_maze(maze);
+
+    return 0;
+}
